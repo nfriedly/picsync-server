@@ -2,7 +2,9 @@
   "name": "picsync",
   "version": "0.0.1",
   "dependencies": {
-    "express": "2.5.*"
-    , "jade": ">= 0.0.1"
+    "express": "2.5.x"
+    , "jade": "0.21.x"
+    , "awssum": "0.3.x"
+    , "formidable": "1.0.x"
   }
 }
