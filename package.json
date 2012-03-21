@@ -1,6 +1,6 @@
 {
   "name": "picsync",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "dependencies": {
     "express": "2.5.x"
     , "jade": "0.21.x"
