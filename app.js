@@ -127,7 +127,7 @@ app.post('/upload', function(req, res) {
     });
 
     form.parse(req, function(err, fields, files) {
-    	console.log('formidable cb fired', err, fields, files);
+    	console.log('formidable cb fired', err, "\nFields: ",Object.getKeys(fields), "\nFiles: ", Object.getKeys(files));
 		res.writeHead(200, {"content-type": "text/plain"});
     	res.write('received upload:\n\n');
       	res.end(JSON.stringify({fields: fields, files: files}));
