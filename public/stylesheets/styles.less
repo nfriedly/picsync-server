@@ -1,6 +1,43 @@
 @import "bootstrap/less/bootstrap.less";
 @import "bootstrap/less/responsive.less";
+@import "Font-Awesome/less/font-awesome.less";
 
 @media (min-width: 980px) {
 	body { padding-top: 60px; }
+}
+
+.hero-unit {
+	form { margin-bottom:0; }
+	
+	input { margin-right:10px; }
+
+	p.small { font-size: 100%; }
+
+	.input-prepend { font-size:130%; }
+
+	.add-on { height: 28px; line-height: 28px; }
+
+	.input-prepend .add-on, 
+	.input-prepend input { margin-top:5px; }
+}
+
+p[class^="icon-"]:before, p[class*=" icon-"]:before {
+	padding: 0 .5em;
+}
+
+.how {
+	li[class^="icon-"]:hover:before,
+	li[class*=" icon-"]:hover:before {
+		font-size: 24px;
+		text-indent: -1.33333em;
+		vertical-align: middle;
+	}
+	
+	li { line-height: 24px; height: 24px; font-size: 110%;}
+}
+
+footer {
+	margin: 40px 0;
+	border-top: 1px solid gray;
+	padding-top: 20px;
 }
