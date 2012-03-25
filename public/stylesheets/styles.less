@@ -2,6 +2,24 @@
 @import "bootstrap/less/responsive.less";
 @import "Font-Awesome/less/font-awesome.less";
 
+// utilities
+
+p[class^="icon-"]:before, p[class*=" icon-"]:before {
+	padding: 0 .5em;
+}
+
+.left {
+	float:left;
+	margin-right: 1em;
+}
+
+.right {
+	float: right;
+	margin-left: 1em;
+}
+
+// top
+
 @media (min-width: 980px) {
 	body { padding-top: 60px; }
 }
@@ -15,26 +33,37 @@
 
 	.input-prepend { font-size:130%; }
 
-	.add-on { height: 28px; line-height: 28px; }
+	.add-on { height: 32px; line-height: 32px; }
 
 	.input-prepend .add-on, 
 	.input-prepend input { margin-top:5px; }
+	img.right {
+		margin-left: 60px;
+		position:relative;
+		top: -30px;
+	}
 }
 
-p[class^="icon-"]:before, p[class*=" icon-"]:before {
-	padding: 0 .5em;
-}
+// middle 
 
 .how {
-	li[class^="icon-"]:hover:before,
-	li[class*=" icon-"]:hover:before {
-		font-size: 24px;
+	li[class^="icon-"]:before,
+	li[class*=" icon-"]:before {
+		font-size: 20px;
 		text-indent: -1.33333em;
 		vertical-align: middle;
+		line-height:24px;
 	}
 	
-	li { line-height: 24px; height: 24px; font-size: 110%;}
 }
+
+.coming-soon i {
+    font-size: 50px;
+    margin-right: 10px;
+    margin-top: 12px;
+}
+
+// bottom
 
 footer {
 	margin: 40px 0;

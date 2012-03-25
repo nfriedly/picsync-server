@@ -48,10 +48,13 @@ app.configure('production', function(){
 
 // Routes
 
-app.get('/', function(req, res){
-  res.render('index', { title: 'PicSync' })
+app.get('/', function(req, res) {
+  res.render('pages/index', {title: 'PicSync'});
 });
 
+app.get('/privacy', function(req, res) {
+	res.render('pages/privacy', {title: 'PicSync Privacy Policy'});
+});
 
 app.get('/upload', function(req, res) {
 	res.render('upload',  {title: 'Upload Photos' });
