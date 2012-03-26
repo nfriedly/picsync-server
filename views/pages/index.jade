@@ -7,12 +7,12 @@ block content
 		p.
 			#{title} automatically upload photos from your Android phone to a private album. 
 			You can look through them on your computer and post your favorites later.
-		form(action="http://picsyncapp.us4.list-manage.com/subscribe/post?u=8e553562163eaf802e9f4d5df&amp;id=e42e3c86df", method="post", target="_blank", class="form-inline")
+		form(action="http://picsyncapp.us4.list-manage.com/subscribe/post?u=8e553562163eaf802e9f4d5df&amp;id=e42e3c86df", method="post", target="_blank", class="form-inline", id="notify_form")
 			p
 				span.input-prepend
 					span.add-on
 						i.icon-envelope
-					input(type="email", value="", name="EMAIL", placeholder="email address", required, class="email btn-large")
+					input(type="email", value="", name="EMAIL", id="email", placeholder="email address", required, class="email btn-large" )
 				input(type="submit", value="Notify me when when it launches &raquo;", class="btn btn-primary btn-large")
 			p.small.icon-ban-circle No Spam. See our <a href="/privacy">privacy policy</a>.
 			
@@ -28,3 +28,13 @@ block content
 		.span6.coming-soon
 			h2 Coming soon
 			p <i class="icon-cogs left"></i> PicSync is under active development - sign up above to be sent an email as soon as we have a beta ready!
+			
+block append footer-scripts
+	// record "entered email address" on the first keypress, and 
+	script
+		$('#email').one("keypress", function() {
+			_gaq.push(["_trackEvent", "Launch notification request", "Entered email address"]);
+		});
+		$('#notify_form').submit(function() {
+			_gaq.push(["_trackEvent", "Launch notification request", "Requested notification of launch"]);
+		});

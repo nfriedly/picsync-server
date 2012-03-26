@@ -9,7 +9,8 @@ var express = require('express')
   , awssum = require('awssum')
   , amazon = awssum.load('amazon/amazon')
   , s3Service = awssum.load('amazon/s3')
-  , fs = require('fs');
+  , fs = require('fs')
+  , _ = require("underscore")._;
 
 var s3 = new s3Service(process.env.AWS_KEY, process.env.AWS_SECRET, 'aws_account_id', amazon.US_EAST_1);
 
@@ -46,14 +47,27 @@ app.configure('production', function(){
   app.use(express.errorHandler());
 });
 
+// custom render function
+app.use(function(req, res, next) {
+	console.log("processing request");
+	res.renderPage = function(page, options) {
+		options = _.defaults(options || {}, {
+			title: 'PicSync', 
+			ga_id: process.env.GA_ID || '',
+		});
+		this.render('pages/'+page, options);
+	}
+	next();
+});
+
 // Routes
 
 app.get('/', function(req, res) {
-  res.render('pages/index', {title: 'PicSync'});
+	res.renderPage('index');
 });
 
 app.get('/privacy', function(req, res) {
-	res.render('pages/privacy', {title: 'PicSync Privacy Policy'});
+	res.renderPage('privacy', {title: 'PicSync Privacy Policy'});
 });
 
 app.get('/upload', function(req, res) {
