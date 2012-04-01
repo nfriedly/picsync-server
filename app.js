@@ -92,44 +92,24 @@ app.post('/upload', function(req, res) {
     	//todo: imagemagick resizing and whatnot
     	
     	console.log("%s uploaded successfully, sending it to to the %s bucket in s3", file.name, process.env.S3_BUCKET);
-
-		// todo: mod awessum to accept a readStream for the body - should be small changes around
-		// lines 403 and 646 of  https://github.com/appsattic/node-awssum/blob/master/lib/awssum.js
+    	
 		var options = {
 			BucketName : process.env.S3_BUCKET,
 			ObjectName : file.name,
 			ContentLength : file.length,
-			Body : fs.readFileSync(file.path),
+			Body : fs.createReadStream(file.path),
 		};
 	
 		s3.PutObject(options, function(err, data) {
 			console.log('s3 upload complete', err, data);
-			if(err) {
-				errors.push(err);
-				throw err
-			}
+			
+			fs.unlink(file.path);
 		});
 		
-		fs.unlink(file.path);
     });
 
     form.on('error', function(err){
     	console.log('formidable error', err);
-    	errors.push(err)
-		throw err;
-    });
-    
-    form.on('aborted', function() {
-    	console.log('request aborted');
-    	errors.push("aborted");
-    });
-    
-    form.on('fileBegin', function(name, file) {
-    	console.log('fileBegin', name, file);
-    });
-
-    form.on('progress', function(bytesReceived, bytesExpected) {
-    	console.log('progress event - %s of %s recieved (%s%)', bytesReceived, bytesExpected, Math.round(bytesReceived/bytesExpected*100));
     });
 
     form.on('field', function(name, value) {
@@ -138,9 +118,6 @@ app.post('/upload', function(req, res) {
 
     form.on('end', function(){
     	console.log('formidable end');
-    	//var success = (errors.length == 0);
-		//res.writeHead(success ? 200 : 500, {"content-type": "text/plain"});
-		//res.end(success ? "Success!" : "There were errors uploading the file :(" );
     });
 
     form.parse(req, function(err, fields, files) {
