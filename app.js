@@ -36,6 +36,11 @@ app.configure(function(){
   //app.use(app.router);
   app.use(express.compiler({src: __dirname + '/public', enable: ['less'] }));
   app.use(express.static(__dirname + '/public'));
+  app.use(function(req, res, next) {
+  	// todo: process verify fb cookies and extract user id, store that and basic info in session
+  	req.fb = {userId: "215902661"};
+  	next();
+  });
 });
 
 app.configure('development', function(){
@@ -70,8 +75,19 @@ app.get('/privacy', function(req, res) {
 	res.renderPage('privacy', {title: 'PicSync Privacy Policy'});
 });
 
+app.get("/pictures", function(req, res) {
+	s3.ListObjects({
+			BucketName : process.env.S3_BUCKET,
+			MaxKeys : 100,
+			Prefix : req.fb.userId + "/",
+		}, function(err, data) {
+			res.writeHead(200, {"content-type": "text/plain"});
+			res.end(JSON.stringify(err ? err : data));
+	});
+});
+
 app.get('/upload', function(req, res) {
-	res.render('upload',  {title: 'Upload Photos' });
+	res.renderPage('upload',  {title: 'Upload Photos' });
 });
 
 app.post('/upload', function(req, res) {
@@ -93,9 +109,12 @@ app.post('/upload', function(req, res) {
     	
     	console.log("%s uploaded successfully, sending it to to the %s bucket in s3", file.name, process.env.S3_BUCKET);
     	
+    	var now = new Date();
+    	var upload_path = req.fb.userId + "/" + now.getFullYear() + "-" + now.getMonth() + "-" + now.getDate() + "/";
+    	
 		var options = {
 			BucketName : process.env.S3_BUCKET,
-			ObjectName : file.name,
+			ObjectName : upload_path + file.name,
 			ContentLength : file.length,
 			Body : fs.createReadStream(file.path),
 		};
