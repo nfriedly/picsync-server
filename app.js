@@ -81,8 +81,13 @@ app.get("/pictures", function(req, res) {
 			MaxKeys : 100,
 			Prefix : req.fb.userId + "/",
 		}, function(err, data) {
-			res.writeHead(200, {"content-type": "text/plain"});
-			res.end(JSON.stringify(err ? err : data));
+			if(data && data.Body.ListBucketResult && data.Body.ListBucketResult.Contents) {
+				// note: contents is an array of objects if there are multiple, but a lone object (no array) if there is exactly one
+				res.renderPage('pictures', {pics: data.Body.ListBucketResult.Contents, bucket: process.env.S3_BUCKET + ".s3.amazonaws.com" });
+			} else {
+				res.writeHead(200, {"content-type": "text/plain"});
+				res.end((err? "Error" : "Success, but") + " no pictures, response is\n" + JSON.stringify(err || data));
+			}
 	});
 });
 
@@ -140,7 +145,7 @@ app.post('/upload', function(req, res) {
     });
 
     form.parse(req, function(err, fields, files) {
-    	console.log('formidable cb fired', err, "\nFields: ",Object.getKeys(fields), "\nFiles: ", Object.getKeys(files));
+    	console.log('formidable cb fired', err, "\nFields: ",_.keys(fields), "\nFiles: ", _.keys(files));
 		res.writeHead(200, {"content-type": "text/plain"});
     	res.write('received upload:\n\n');
       	res.end(JSON.stringify({fields: fields, files: files}));

@@ -1,0 +1,6 @@
+extends ../layout
+
+block content
+	for pic in pics
+		img(src="//#{bucket}/#{pic.Key})
+	
