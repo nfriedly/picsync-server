@@ -117,11 +117,13 @@ app.post('/upload', function(req, res) {
     	var now = new Date();
     	var upload_path = req.fb.userId + "/" + now.getFullYear() + "-" + now.getMonth() + "-" + now.getDate() + "/";
     	
+    	// todo: content-type, md5, expires
 		var options = {
 			BucketName : process.env.S3_BUCKET,
 			ObjectName : upload_path + file.name,
 			ContentLength : file.length,
 			Body : fs.createReadStream(file.path),
+			Acl: "public-read" // todo: consider making this authenticated-read and getting signed urls each time
 		};
 	
 		s3.PutObject(options, function(err, data) {
