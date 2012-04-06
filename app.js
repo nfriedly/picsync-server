@@ -82,8 +82,12 @@ app.get("/pictures", function(req, res) {
 			Prefix : req.fb.userId + "/",
 		}, function(err, data) {
 			if(data && data.Body.ListBucketResult && data.Body.ListBucketResult.Contents) {
+				var pics = data.Body.ListBucketResult.Contents;
 				// note: contents is an array of objects if there are multiple, but a lone object (no array) if there is exactly one
-				res.renderPage('pictures', {pics: data.Body.ListBucketResult.Contents, bucket: process.env.S3_BUCKET + ".s3.amazonaws.com" });
+				if (!_.isArray(pics)) {
+					pics = [pics];
+				}
+				res.renderPage('pictures', {pics: pics, bucket: process.env.S3_BUCKET + ".s3.amazonaws.com"});
 			} else {
 				res.writeHead(200, {"content-type": "text/plain"});
 				res.end((err? "Error" : "Success, but") + " no pictures, response is\n" + JSON.stringify(err || data));
