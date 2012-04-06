@@ -126,6 +126,7 @@ app.post('/upload', function(req, res) {
 			BucketName : process.env.S3_BUCKET,
 			ObjectName : upload_path + file.name,
 			ContentLength : file.length,
+			ContentType: "image/jpeg",
 			Body : fs.createReadStream(file.path),
 			Acl: "public-read" // todo: consider making this authenticated-read and getting signed urls each time
 		};
