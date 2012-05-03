@@ -9,10 +9,13 @@ var express = require('express')
   , awssum = require('awssum')
   , amazon = awssum.load('amazon/amazon')
   , s3Service = awssum.load('amazon/s3')
+  , MockS3 = require('mockS3')
   , fs = require('fs')
   , _ = require("underscore")._;
+  
+var config = require('./config');
 
-var s3 = new s3Service(process.env.AWS_KEY, process.env.AWS_SECRET, 'aws_account_id', amazon.US_EAST_1);
+var s3 = (config.isS3Enabled) ? new s3Service(config.AWS_KEY, config.AWS_SECRET, 'asdf' /* account id is not actually needed */, config.AWS_REGION) : new mockS3();
 
 var app = module.exports = express.createServer();
 
