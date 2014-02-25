@@ -1,6 +1,8 @@
 PicSync Server
 ======================
 
+Notice: PicSync is no longer being developed or maintained, however, the existing code will remain free for anyone who wants to build on it or learn from it.
+
 PicSync automatically uploads photos you take on on your phone to a private online album. 
 Later, when you log into facebook, the app notifies you of new photos allowing you to 
 review them and post your favorites.
